@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f8fc" />
+    <meta name="description" content="小满售后 Agent：政策检索、订单工具和人工审批演示。" />
+    <title>小满 · 售后服务台</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/app.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-lockup">
+          <div class="brand-mark"><span></span><span></span><span></span></div>
+          <div class="brand-copy"><strong>小满</strong><span>AFTERCARE AI</span></div>
+        </div>
+
+        <button class="new-chat-button" id="new-chat-button" type="button">
+          <span class="plus-icon">＋</span><span>新建对话</span><span class="shortcut">⌘ K</span>
+        </button>
+
+        <div class="side-section">
+          <div class="side-label">演示订单 <span class="label-dot"></span></div>
+          <div id="order-list" class="order-list">
+            <div class="skeleton-row"></div><div class="skeleton-row"></div><div class="skeleton-row"></div>
+          </div>
+          <p class="sidebar-hint">点击订单，快速开始一个演示场景。</p>
+        </div>
+
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-footer">
+          <div class="avatar">XM</div>
+          <div class="operator-copy"><strong>演示工作区</strong><span>售后服务 Agent</span></div>
+          <span class="more-dots">···</span>
+        </div>
+      </aside>
+
+      <main class="main-shell">
+        <header class="topbar">
+          <div class="breadcrumb"><span>工作台</span><span class="crumb-slash">/</span><strong>售后服务</strong></div>
+          <div class="topbar-actions">
+            <div class="runtime-pill"><span class="runtime-dot"></span><span id="runtime-label">连接中</span></div>
+            <button class="approval-button" id="approval-toggle" type="button">
+              <span class="approval-icon">✓</span><span>审批工作台</span><span id="approval-count" class="approval-count">0</span>
+            </button>
+            <button class="profile-button" type="button" aria-label="演示用户">林</button>
+          </div>
+        </header>
+
+        <div class="workspace">
+          <section class="chat-panel" aria-label="售后 Agent 对话">
+            <div class="chat-heading">
+              <div>
+                <div class="eyebrow"><span class="sparkle">✳</span> CUSTOMER CARE</div>
+                <h1>售后服务台</h1>
+                <p>政策有据可查，操作需确认留痕。</p>
+              </div>
+              <div class="agent-state"><span class="state-orbit"><span></span></span><span><strong>小满</strong><small>在线服务中</small></span></div>
+            </div>
+
+            <div class="conversation" id="conversation">
+              <div id="welcome" class="welcome-card">
+                <div class="welcome-icon"><span>✳</span></div>
+                <div class="welcome-kicker">HELLO, LIN</div>
+                <h2>今天想处理什么？</h2>
+                <p>我可以帮你查订单、检索售后政策或登记问题。</p>
+                <div class="suggestion-grid">
+                  <button class="suggestion-card" data-message="帮我查一下订单 ORD-2026-1003 的物流状态">
+                    <span class="suggestion-icon sky">↗</span><span><strong>查询物流</strong><small>查看订单配送进度</small></span><span class="suggestion-arrow">↗</span>
+                  </button>
+                  <button class="suggestion-card" data-message="订单 ORD-2026-1001 我想申请退款，商品没有使用">
+                    <span class="suggestion-icon peach">↩</span><span><strong>申请退款</strong><small>走完确认与审批流程</small></span><span class="suggestion-arrow">↗</span>
+                  </button>
+                  <button class="suggestion-card" data-message="七日无理由退货的条件是什么？">
+                    <span class="suggestion-icon lilac">▤</span><span><strong>了解政策</strong><small>回答会附条款出处</small></span><span class="suggestion-arrow">↗</span>
+                  </button>
+                  <button class="suggestion-card" data-message="订单 ORD-2026-1004 的台灯有问题，灯罩破损了">
+                    <span class="suggestion-icon mint">＋</span><span><strong>登记商品问题</strong><small>创建售后跟进工单</small></span><span class="suggestion-arrow">↗</span>
+                  </button>
+                </div>
+              </div>
+              <div class="message-list" id="message-list" aria-live="polite"></div>
+              <div id="pending-area"></div>
+            </div>
+
+            <div class="composer-wrap">
+              <form id="chat-form" class="composer">
+                <textarea id="chat-input" rows="1" maxlength="4000" placeholder="描述你遇到的问题，或输入订单号…" aria-label="输入消息"></textarea>
+                <div class="composer-controls">
+                  <div class="composer-tools"><span class="tool-spark">✳</span><span>答案依据模拟政策和订单数据</span></div>
+                  <button class="send-button" id="send-button" type="submit" aria-label="发送消息"><span>发送</span><span class="send-arrow">↑</span></button>
+                </div>
+              </form>
+              <div class="composer-footnote">AI 生成内容可能有误 · 退款操作仅在模拟环境执行</div>
+            </div>
+          </section>
+
+          <aside class="inspector" aria-label="Agent 执行记录">
+            <div class="inspector-head">
+              <div><div class="inspector-kicker">OBSERVABILITY</div><h2>运行记录</h2></div>
+              <button class="icon-button" id="clear-trace" type="button" title="清空当前展示">↺</button>
+            </div>
+            <div class="trace-summary">
+              <div class="trace-summary-icon"><span>◈</span></div>
+              <div><strong>执行轨迹</strong><span id="trace-summary-text">等待对话开始</span></div>
+              <span class="trace-live-dot"></span>
+            </div>
+            <div class="trace-flow" id="trace-flow">
+              <div class="empty-trace">
+                <div class="empty-trace-icon">⌁</div>
+                <strong>还没有执行记录</strong>
+                <span>Agent 调用的模型和工具会显示在这里。</span>
+              </div>
+            </div>
+            <div class="inspector-bottom">
+              <div class="privacy-mark">⌑</div>
+              <div><strong>演示数据环境</strong><span>订单与退款均为模拟数据</span></div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <div class="drawer-backdrop" id="drawer-backdrop"></div>
+    <aside class="approval-drawer" id="approval-drawer" aria-label="人工审批工作台" aria-hidden="true">
+      <div class="drawer-header">
+        <div><div class="inspector-kicker">HUMAN REVIEW</div><h2>人工审批</h2><p>用户确认后，退款申请会进入此队列。</p></div>
+        <button class="icon-button" id="close-drawer" type="button" aria-label="关闭">×</button>
+      </div>
+      <div class="drawer-metrics" id="drawer-metrics"></div>
+      <div class="approval-list" id="approval-list">
+        <div class="drawer-empty"><div>✓</div><strong>暂无待审批申请</strong><span>完成用户确认后，申请会显示在这里。</span></div>
+      </div>
+      <div class="drawer-footnote"><span>⌑</span> 模拟审批通过后只会创建演示退款记录。</div>
+    </aside>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f8fc" />
+    <meta name="description" content="澄析数据 Agent：把自然语言转成受限只读查询，并追踪 SQL 执行过程。" />
+    <title>澄析 · 数据 Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/app.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-lockup">
+          <div class="brand-mark"><span></span><span></span><span></span></div>
+          <div class="brand-copy"><strong>澄析</strong><span>DATA AGENT</span></div>
+        </div>
+        <div class="workspace-chip"><span class="workspace-avatar">D</span><span><strong>演示数据集</strong><small>电商经营分析</small></span><span class="chevron">⌄</span></div>
+        <div class="side-divider"></div>
+        <div class="side-title"><span>数据字典</span><span class="count-chip">4</span></div>
+        <div class="schema-list" id="schema-list"><div class="schema-skeleton"></div><div class="schema-skeleton"></div><div class="schema-skeleton"></div></div>
+        <div class="sidebar-note"><span class="lock-symbol">⌑</span><span>查询仅能读取演示表<br />所有 SQL 都会先经过安全校验</span></div>
+        <div class="sidebar-bottom"><div class="sidebar-orbit">✳</div><span>澄析 Agent</span><span class="version-chip">v0.1</span></div>
+      </aside>
+
+      <main class="main-shell">
+        <header class="topbar">
+          <div class="breadcrumb"><span>数据空间</span><span class="crumb-slash">/</span><strong>分析对话</strong></div>
+          <div class="topbar-actions">
+            <div class="security-pill"><span class="shield">⌑</span>只读沙箱</div>
+            <div class="runtime-pill"><span class="runtime-dot"></span><span id="runtime-label">连接中</span></div>
+            <button class="icon-button profile-button" id="data-summary-button" type="button" title="管理员数据概览">D</button>
+          </div>
+        </header>
+
+        <div class="content-scroll" id="content-scroll">
+          <section class="hero" id="hero">
+            <div class="hero-kicker"><span class="hero-star">✳</span> ASK YOUR DATA</div>
+            <h1>你好，今天想从数据里<br /><span>发现什么？</span></h1>
+            <p>用自然语言提问。Agent 会生成只读 SQL、检查边界，并把查询过程展示给你。</p>
+            <form class="ask-box" id="ask-form">
+              <textarea id="question-input" rows="2" maxlength="1500" placeholder="例如：按月份统计今年各品类销售额，看看哪些品类在增长…" aria-label="自然语言分析问题"></textarea>
+              <div class="ask-controls"><div class="ask-meta"><span class="spark-mini">✧</span><span>可以问销售额、订单量、商品品类或顾客分层</span></div><button class="run-button" type="submit" id="run-button"><span>开始分析</span><span class="run-arrow">↑</span></button></div>
+            </form>
+            <div class="suggestions-label">试试这些问题</div>
+            <div class="suggestion-chips">
+              <button class="suggestion-chip" data-question="按月份统计 2026 年的销售额趋势">▥ <span>月度销售趋势</span></button>
+              <button class="suggestion-chip" data-question="比较不同商品品类的销售额，找出最高的品类">◫ <span>品类销售对比</span></button>
+              <button class="suggestion-chip" data-question="各销售区域的订单数和收入分别是多少？">⌖ <span>区域表现</span></button>
+              <button class="suggestion-chip" data-question="不同顾客分层有多少客户和订单？">♙ <span>顾客分层</span></button>
+            </div>
+          </section>
+
+          <section class="analysis-section" id="analysis-section" hidden>
+            <div class="question-card"><div class="question-mark">Q</div><div><span>你的问题</span><strong id="question-label"></strong></div><button class="edit-question" id="edit-question" type="button" title="修改问题">↗</button></div>
+            <div class="answer-card" id="answer-card">
+              <div class="answer-header"><div class="answer-mark">✳</div><div><strong>分析结果</strong><span id="answer-mode">澄析 Agent</span></div><div class="answer-status"><span class="runtime-dot"></span><span>已完成</span></div></div>
+              <div class="answer-copy" id="answer-copy"></div>
+              <div class="result-chart-wrap" id="chart-wrap" hidden>
+                <div class="result-chart-head"><div><strong id="chart-title">数据分布</strong><span id="chart-subtitle">按查询结果生成</span></div><span class="chart-badge">FROM SQL</span></div>
+                <div class="chart-container" id="chart-container"></div>
+              </div>
+              <div class="result-table-wrap" id="table-wrap" hidden>
+                <div class="table-head"><div><strong>查询结果</strong><span id="table-count"></span></div><button class="export-button" id="export-csv" type="button">↓ 导出 CSV</button></div>
+                <div class="table-scroll"><table id="result-table"></table></div>
+                <div class="truncation-note" id="truncation-note" hidden>结果已截取至前 100 行。</div>
+              </div>
+            </div>
+
+            <div class="trace-card">
+              <div class="trace-card-head"><div><div class="section-kicker">AGENT TRACE</div><strong>执行轨迹</strong><span id="trace-count">0 个步骤</span></div><span class="trace-live-indicator">● 运行完成</span></div>
+              <div class="trace-list" id="trace-list"></div>
+            </div>
+
+            <div class="followup-box"><span class="followup-spark">✳</span><input id="followup-input" type="text" placeholder="再分析一个问题，例如：按地区统计订单量…" /><button id="followup-submit" type="button" aria-label="开始新分析">↑</button></div>
+          </section>
+          <footer class="page-footer">澄析会先验证 SQL，再通过只读数据库连接执行。生成结论只反映当前演示数据集。</footer>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+    <dialog class="summary-dialog" id="summary-dialog">
+      <div class="dialog-head"><div><div class="section-kicker">DATA CATALOG</div><h2>演示数据概览</h2></div><button class="icon-button" id="close-summary" type="button">×</button></div>
+      <div id="summary-body" class="summary-body"><span class="loading-summary">验证管理员令牌以读取数据统计…</span></div>
+      <div class="dialog-foot">该概览只统计行数，不会修改数据库。</div>
+    </dialog>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>

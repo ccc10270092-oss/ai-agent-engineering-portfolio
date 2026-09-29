@@ -1,0 +1,10 @@
+services:
+  aftercare-agent:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./runtime-data:/app/runtime-data
+    restart: unless-stopped
