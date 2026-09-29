@@ -1,0 +1,4 @@
+# 完整产线 + 可选增强依赖（在 requirements.txt 基础上追加）。
+-r requirements.txt
+openai>=1.0          # 如需改用 LangChain 官方 ChatOpenAI / 官方 OpenAI 客户端
+python-dotenv>=1.0   # 备选 .env 解析（本工程内置了极简 .env 解析，可不装）

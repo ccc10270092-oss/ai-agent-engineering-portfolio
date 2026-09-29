@@ -1,0 +1,32 @@
+# 非敏感配置（敏感项如 API Key / Base URL 请配置在 .env，勿写在本文件）
+llm:
+  model: mock            # 真实调用时改为具体模型名；.env 中 LLM_MODEL 优先
+  max_tokens: 2048
+  temperature: 0.2
+
+rate_limit:
+  base_delay: 1.0
+  max_retries: 2
+
+retrieval:
+  top_k: 5
+  fts_weight: 0.5
+  vector_weight: 0.5
+  chunk_size: 512
+  chunk_overlap: 64
+  vector_backend: chroma # chroma | simple（chromadb 未安装时自动回退 simple）
+  embedding_backend: local # ""=自动（embedding 三项齐→api，否则 hash）| local | api | hash
+  embedding_model: ""    # local 模式留空=默认 BAAI/bge-small-zh-v1.5（首次运行自动下载约 100MB 到 data/models/）
+  fts_db: data/fts.db    # FTS5 全文索引库（落盘持久化；":memory:" = 不持久化）
+  docs_db: data/docs.db  # 知识文档登记库
+  chroma_path: data/chroma # ChromaDB 向量库目录
+
+agent:
+  max_steps: 10
+  tool_retries: 2
+
+content:
+  retries: 3
+
+products:
+  products_db: data/products.db # 商品目录库（首次启动自动写入内置种子 P001~P003）

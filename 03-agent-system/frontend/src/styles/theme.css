@@ -1,0 +1,192 @@
+/* ============================================================
+   设计令牌 · 深色科技风
+   图表配色已通过 dataviz 校验器(表面 #111A2C):
+   漏斗有序渐变 #86b6ef→#5598e7→#2a78d6→#184f95,系列蓝 #3987e5
+   ============================================================ */
+:root {
+  --bg-page: #0a0f1e;
+  --bg-surface: #111a2c;
+  --bg-raised: #17223a;
+  --bg-inset: #0d1526;
+  --border-hairline: rgba(148, 163, 184, 0.14);
+  --border-strong: rgba(148, 163, 184, 0.26);
+  --text-1: #e6edf7;
+  --text-2: #9fb0cc;
+  --text-3: #64748b;
+  --accent: #22d3ee;
+  --accent-2: #7c8cf8;
+  --grad-accent: linear-gradient(135deg, #22d3ee 0%, #7c8cf8 100%);
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+/* Element Plus 深色变量重映射:与设计令牌对齐 */
+html.dark {
+  --el-bg-color: var(--bg-surface);
+  --el-bg-color-overlay: var(--bg-raised);
+  --el-bg-color-page: var(--bg-page);
+  --el-fill-color-blank: var(--bg-inset);
+  --el-fill-color-light: rgba(148, 163, 184, 0.08);
+  --el-fill-color: rgba(148, 163, 184, 0.12);
+  --el-fill-color-lighter: rgba(148, 163, 184, 0.06);
+  --el-border-color: var(--border-strong);
+  --el-border-color-light: rgba(148, 163, 184, 0.16);
+  --el-border-color-lighter: var(--border-hairline);
+  --el-border-color-extra-light: rgba(148, 163, 184, 0.08);
+  --el-text-color-primary: var(--text-1);
+  --el-text-color-regular: #c0cde4;
+  --el-text-color-secondary: var(--text-2);
+  --el-text-color-placeholder: #5a6b87;
+  --el-mask-color: rgba(4, 8, 18, 0.7);
+  --el-border-radius-base: 8px;
+  --el-box-shadow: 0 8px 24px rgba(2, 6, 16, 0.5);
+  --el-box-shadow-light: 0 4px 14px rgba(2, 6, 16, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--text-1);
+  background:
+    radial-gradient(1100px 560px at 12% -8%, rgba(34, 211, 238, 0.07), transparent 60%),
+    radial-gradient(900px 520px at 88% 108%, rgba(124, 140, 248, 0.07), transparent 60%),
+    var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- 通用组件 ---------- */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(2, 6, 16, 0.35);
+}
+
+.card-pad {
+  padding: 20px;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.card-title::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--grad-accent);
+}
+
+.card-desc {
+  margin: 0 0 16px;
+  padding-left: 13px;
+  font-size: 12.5px;
+  color: var(--text-3);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+.text-muted {
+  color: var(--text-3);
+}
+
+/* ---------- 滚动条 ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.18);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.3);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ---------- 路由切换动画 ---------- */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* ---------- Element Plus 细节微调 ---------- */
+.el-button {
+  font-weight: 500;
+}
+
+.el-table {
+  --el-table-border-color: var(--border-hairline);
+  --el-table-header-bg-color: var(--bg-inset);
+  --el-table-row-hover-bg-color: rgba(148, 163, 184, 0.05);
+  font-variant-numeric: tabular-nums;
+}
+
+.el-table th.el-table__cell {
+  color: var(--text-2) !important;
+  font-weight: 600;
+}
+
+.el-tabs__nav-wrap::after {
+  height: 1px;
+  background-color: var(--border-hairline);
+}
+
+.el-collapse,
+.el-collapse-item__wrap,
+.el-collapse-item__header {
+  border-color: var(--border-hairline) !important;
+  background: transparent;
+}
+
+.el-radio-button__inner {
+  background: var(--bg-inset);
+  border-color: var(--border-hairline) !important;
+}

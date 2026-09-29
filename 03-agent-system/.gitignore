@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 敏感配置（真实密钥，绝不入库）
+.env
+
+# 运行期生成数据
+data/checkpoints/
+data/chroma/
+data/fts.db
+data/docs.db
+data/products.db
+data/models/
+
+# 系统
+.DS_Store
+Thumbs.db
